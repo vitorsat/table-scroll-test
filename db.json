@@ -1,0 +1,16 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "email": "vitor@gmail.com",
+      "password": "123"
+    }
+  ],
+  "listUsers": [
+    {
+      "id": 1,
+      "body": "Vitor Miguel",
+      "age": 23
+    }
+  ]
+}
