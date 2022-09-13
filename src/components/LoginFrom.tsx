@@ -1,4 +1,4 @@
-export function Login() {
+export function LoginForm() {
   return (
     <main className="flex items-center justify-center h-screen">
       <form>
