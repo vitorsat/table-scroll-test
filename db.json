@@ -1,0 +1,33 @@
+{
+  "user": {
+    "email": "vitor@gmail.com",
+    "password": "123"
+  },
+  "listUsers": [
+    {
+      "id": 1,
+      "name": "Vitor Miguel",
+      "age": 23
+    },
+    {
+      "id": 2,
+      "name": "José Miguel",
+      "age": 61
+    },
+    {
+      "id": 3,
+      "name": "Gabriela Almeida",
+      "age": 24
+    },
+    {
+      "id": 4,
+      "name": "Amanda Castilho",
+      "age": 43
+    },
+    {
+      "id": 5,
+      "name": "João Pedro",
+      "age": 27
+    }
+  ]
+}
