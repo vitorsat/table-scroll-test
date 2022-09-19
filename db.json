@@ -1,33 +1,29 @@
 {
-  "user": {
-    "email": "vitor@gmail.com",
-    "password": "123"
-  },
-  "listUsers": [
+  "posts": [
     {
       "id": 1,
-      "name": "Vitor Miguel",
-      "age": 23
+      "title": "Teste",
+      "body": "Teste1"
     },
     {
-      "id": 2,
-      "name": "José Miguel",
-      "age": 61
+      "title": "rwerwe",
+      "body": "werwerw",
+      "id": "2"
     },
     {
-      "id": 3,
-      "name": "Gabriela Almeida",
-      "age": 24
+      "title": "rwerwe",
+      "body": "werwerw",
+      "id": "3"
     },
     {
-      "id": 4,
-      "name": "Amanda Castilho",
-      "age": 43
+      "title": "rwerwe",
+      "body": "werwerw",
+      "id": "4"
     },
     {
-      "id": 5,
-      "name": "João Pedro",
-      "age": 27
+      "title": "rwerwe",
+      "body": "werwerw",
+      "id": "5"
     }
   ]
 }

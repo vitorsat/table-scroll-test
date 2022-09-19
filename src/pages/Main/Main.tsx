@@ -1,3 +1,5 @@
+import RegisterForm from "../../components/RegisterForm";
+
 export function Main() {
-  return <h1 className="bg-white">oi</h1>;
+  return <RegisterForm />
 }

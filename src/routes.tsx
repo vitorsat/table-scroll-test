@@ -9,7 +9,7 @@ export function Routes() {
       <Switch>
         <Route path="login" element={<Login />} />
         <Route path="main" element={<Main />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Main />} />
       </Switch>
     </BrowserRouter>
   );

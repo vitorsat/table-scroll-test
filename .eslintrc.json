@@ -34,13 +34,10 @@
         "selector": "interface",
         "format": [
           "PascalCase"
-        ],
-        "custom": {
-          "regex": "^I[A-Z]",
-          "match": true
-        }
+        ]
       }
     ],
+    "no-plusplus": "off",
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
     "no-shadow": "off",
@@ -86,7 +83,7 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "auto"
+        "endOfLine": "off"
       }
     ],
     "react/jsx-filename-extension": [
@@ -99,6 +96,7 @@
       }
     ],
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": [
       "error"
