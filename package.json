@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "json-server --watch db.json --port 5000",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
@@ -12,7 +11,6 @@
   "dependencies": {
     "@hookform/resolvers": "^2.9.8",
     "axios": "^0.27.2",
-    "json-server": "^0.17.0",
     "react": "^18.2.0",
     "react-data-grid": "^7.0.0-beta.18",
     "react-dom": "^18.2.0",

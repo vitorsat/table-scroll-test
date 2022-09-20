@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes as Switch } from "react-router-dom";
 
-import { Login } from "./pages/Login/Login";
-import { Main } from "./pages/Main/Main";
+import { List } from "./pages/List";
+import { Products } from "./pages/Products";
 
 export function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="login" element={<Login />} />
-        <Route path="main" element={<Main />} />
-        <Route path="/" element={<Main />} />
+        <Route path="list" element={<List />} />
+        <Route path="products/:id" element={<Products />} />
+        <Route path="/" element={<List />} />
       </Switch>
     </BrowserRouter>
   );
