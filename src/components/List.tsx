@@ -25,19 +25,20 @@ export function ListComponent() {
           <BiError className="text-6xl text-red-500" />
           <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error?.message}</p>
         </div>
-        : ''}
-      <div className="text-center mt-10">
-        <ul>List</ul>
-        {getListProducts.data?.map((item: any) => {
-          return (
-            <div key={item.id}>
-              <Link to={`/products/${item.id}`}>
-                <li className="pb-3">{item.name}</li>
-              </Link>
-            </div>
-          )
-        })}
-      </div>
+        :
+        <div className="text-center mt-10">
+          <ul>List</ul>
+          {getListProducts.data?.map((item: any) => {
+            return (
+              <div key={item.id}>
+                <Link to={`/products/${item.id}`}>
+                  <li className="pb-3">{item.name}</li>
+                </Link>
+              </div>
+            )
+          })}
+        </div>
+      }
     </>
   );
 }
