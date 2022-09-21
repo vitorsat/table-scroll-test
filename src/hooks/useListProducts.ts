@@ -2,12 +2,6 @@ import { useQuery } from "react-query";
 
 import { api } from "../services/api";
 
-interface Result {
-  error: {
-    message: string
-  }
-}
-
 export function useListProducts() {
   // const postPostCall = (data: FormData) =>
   //   api.post("/posts", data).then(res => res.data)
