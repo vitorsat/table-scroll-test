@@ -1,7 +1,12 @@
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
 import { api } from "../services/api";
-import { FormData } from "../types/index";
+
+interface Result {
+  error: {
+    message: string
+  }
+}
 
 export function useListProducts() {
   // const postPostCall = (data: FormData) =>
@@ -18,7 +23,7 @@ export function useListProducts() {
   const getListProductsCall = () =>
     api.get("/typologies?_embed=products").then(res => res.data);
 
-  const getListProducts = useQuery("getPost", getListProductsCall);
+  const getListProducts = useQuery<any, Error>("getPost", getListProductsCall, { retry: 2 });
 
   return { getListProducts };
 }

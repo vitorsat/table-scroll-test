@@ -28,7 +28,6 @@ export default function ProductsComponent() {
     handleSubmit,
     getValues,
     setValue,
-    formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   })
@@ -40,8 +39,6 @@ export default function ProductsComponent() {
     // })
   }
 
-  console.log(getListProducts.error)
-
   return (
     <>
       {getListProducts.isLoading ? <Loader /> : ''}
@@ -51,7 +48,7 @@ export default function ProductsComponent() {
       {getListProducts.error ?
         <div className="text-center flex flex-row align-middle justify-center mt-96">
           <BiError className="text-6xl text-red-500" />
-          <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error.message}</p>
+          <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error?.message}</p>
         </div>
         : ''}
       {products?.map((item: any) => {
