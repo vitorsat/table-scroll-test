@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import * as yup from "yup"
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { Loader } from "./Loader"
-import { useListProducts } from "../hooks/useListProducts";
+import { Loader } from "../Loader"
+import { useListProducts } from "../../hooks/useListProducts";
 import { BiError } from "react-icons/bi";
 
 let renderCount = 0
@@ -58,7 +58,7 @@ export default function ProductsComponent() {
             <div className="flex flex-row justify-center align-middle h-max">
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col align-middle justify-center h-min bg-gray-700"
+                className="bg-gray-700 w-full rounded-lg shadow-md"
               >
                 <table>
                   <thead>
@@ -98,8 +98,12 @@ export default function ProductsComponent() {
                       </tbody>
                     )
                   })}
-                  <input type="submit" />
                 </table>
+                <div className="fixed bottom-0 w-full bg-[black] h-14 flex flex-row justify-end align-middle">
+                  <Link to="/"><button type="button" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Voltar</button></Link>
+
+                  <button type="submit" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Salvar</button>
+                </div>
               </form>
             </div>
           </>

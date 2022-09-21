@@ -1,4 +1,4 @@
-import { ListComponent } from "../components/List";
+import { ListComponent } from "../components/List/List";
 
 export function List() {
   return <ListComponent />
