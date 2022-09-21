@@ -1,25 +1,19 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import * as yup from "yup"
-import 'react-data-grid/lib/styles.css';
-import DataGrid, { textEditor } from 'react-data-grid';
 import { useParams } from "react-router-dom";
 
 import { Loader } from "./Loader"
 import { useListProducts } from "../hooks/useListProducts";
+import { BiError } from "react-icons/bi";
 
 let renderCount = 0
 
 const validationSchema = yup.object({
-  id: yup.string().required("O campo id é obrigatório"),
-  title: yup.string().required("O campo title é obrigatório"),
-  body: yup.string().required("O campo body é obrigatório"),
+  // id: yup.string().required("O campo id é obrigatório"),
+  // title: yup.string().required("O campo title é obrigatório"),
+  // body: yup.string().required("O campo body é obrigatório"),
 })
-
-interface Row {
-  id: number;
-  name: string;
-}
 
 export default function ProductsComponent() {
   renderCount++
@@ -29,99 +23,91 @@ export default function ProductsComponent() {
 
   const products = getListProducts.data?.filter((item: any) => item.id == id)
 
-  console.log(products)
-
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      id: "",
-      title: "",
-      body: "",
-    },
     resolver: yupResolver(validationSchema),
   })
 
   const onSubmit = () => {
     const values = getValues()
+    console.log(values)
     // return postPost.mutate({
-    //   id: values.id,
-    //   title: values.title,
-    //   body: values.body,
     // })
   }
 
-  const columns = [
-    { key: 'id', name: 'ID' },
-    { key: 'lmCode', name: 'lmCode', editor: textEditor, resizable: true, width: 200 },
-    { key: 'lmDescription', name: 'lmDescription', editor: textEditor, resizable: true, width: 200 },
-    { key: 'saleAmbition', name: 'saleAmbition', editor: textEditor, resizable: true, width: 200 },
-    { key: 'salePrice', name: 'salePrice', editor: textEditor, resizable: true, width: 200 },
-    { key: 'arcticles', name: 'arcticles', editor: textEditor, resizable: true, width: 200 },
-    { key: 'linelist', name: 'linelist', editor: textEditor, resizable: true, width: 200 }
-  ];
-
-  const rowKeyGetter = (row: Row) => {
-    return row.id
-  }
-
-  if (getListProducts.isLoading) {
-    return <Loader />
-  }
+  console.log(getListProducts.error)
 
   return (
     <>
+      {getListProducts.isLoading ? <Loader /> : ''}
       <h1 className="text-fuchsia-50 flex align-center justify-center mt-3">
         Render Count: {renderCount}
       </h1>
+      {getListProducts.error ?
+        <div className="text-center flex flex-row align-middle justify-center mt-96">
+          <BiError className="text-6xl text-red-500" />
+          <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error.message}</p>
+        </div>
+        : ''}
       {products?.map((item: any) => {
         return (
           <>
-            <h1 className="mt-4 text-center mb-5">{item.name}</h1>
-            <div key={item.id} className="flex flex-row justify-center align-middle h-max">
-              <DataGrid className="w-max" enableVirtualization columns={columns} onRowsChange={() => onSubmit()} rows={
-                item.products.map((product: any) => {
-                  return {
-                    id: product.id,
-                    lmCode: product.lmCode,
-                    lmDescription: product.lmDesc,
-                    saleAmbition: product.saleAmbition,
-                    salePrice: product.salePrice,
-                  }
-                })
-              } rowKeyGetter={rowKeyGetter} />
+            <h1 className="mt-4 text-center mb-5">{products.name}</h1>
+            <div className="flex flex-row justify-center align-middle h-max">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col align-middle justify-center h-min bg-gray-700"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th>lmCode</th>
+                      <th>lmDesc</th>
+                      <th>saleAmbition</th>
+                      <th>salePrice</th>
+                    </tr>
+                  </thead>
+                  {item.products.map((product: any) => {
+                    return (
+                      <tbody key={product.id}>
+                        <tr>
+                          <td>{product.lmCode}</td>
+                          <td>{product.lmDesc}</td>
+                          <td>
+                            <input
+                              key={product.saleAmbition}
+                              {...register(`products.${product.id}.saleAmbition`)}
+                              placeholder={"saleAmbition"}
+                              defaultValue={product.saleAmbition}
+                              onChange={(e) => setValue("saleAmbition", e.target.value)}
+                              className="text-center mt-3 text-slate-900"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              {...register(`products.${product.id}.salePrice`)}
+                              placeholder={"salePrice"}
+                              defaultValue={product.salePrice}
+                              onChange={(e) => setValue("salePrice", e.target.value)}
+                              className="text-center mt-3 text-slate-900"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    )
+                  })}
+                  <input type="submit" />
+                </table>
+              </form>
             </div>
           </>
         )
       })}
-      {/* <DataGrid onRowClick={() => console.log(rows)} className="w-max" enableVirtualization columns={columns} onRowsChange={() => onSubmit()} rows={rows} rowKeyGetter={rowKeyGetter} /> */}
-      {/* <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col align-middle justify-center h-min bg-gray-700"
-        >
-          <input
-            {...register("id")}
-            placeholder="Id"
-            className="text-center mt-3 text-slate-900"
-          />
-          <input
-            {...register("title")}
-            placeholder="Title"
-            className="text-center mt-3 text-slate-900"
-          />
-          <input
-            {...register("body")}
-            placeholder="Body"
-            className="text-center my-3 text-slate-900"
-          />
-          <button className="bg-blue-200 w-full h-10 " type="submit">
-            Submit
-          </button>
-        </form> */}
-      {/* </div> */}
     </>
   )
 }
