@@ -21,7 +21,7 @@ export default function ProductsComponent() {
 
   const { id } = useParams();
 
-  const products = getListProducts.data?.filter((item: any) => item.id == id)
+  // const products = getListProducts.data?.filter((item: any) => item.id == id)
 
   const {
     register,
@@ -39,6 +39,36 @@ export default function ProductsComponent() {
     // })
   }
 
+  // console.log(getListProducts?.data)
+
+  const MapList = ({ product }: any) => {
+    return (
+      <tr key={product.id} className="text-center border-b border-[#dddddd] hover:bg-black cursor-pointer">
+        <td>{product.lmCode}</td>
+        <td>{product.lmDesc}</td>
+        <td>
+          <input
+            key={product.saleAmbition}
+            {...register(`products.${product.id}.saleAmbition`)}
+            placeholder={"saleAmbition"}
+            defaultValue={product.saleAmbition}
+            onChange={(e) => setValue("saleAmbition", e.target.value)}
+            className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
+          />
+        </td>
+        <td>
+          <input
+            {...register(`products.${product.id}.salePrice`)}
+            placeholder={"salePrice"}
+            defaultValue={product.salePrice}
+            onChange={(e) => setValue("salePrice", e.target.value)}
+            className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
+          />
+        </td>
+      </tr>
+    )
+  }
+
   return (
     <>
       {getListProducts.isLoading ? <Loader /> : ''}
@@ -51,60 +81,46 @@ export default function ProductsComponent() {
           <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error?.message}</p>
         </div>
         : ''}
-      {products?.map((item: any) => {
+      {getListProducts?.data?.map((item: any) => {
         return (
           <>
-            <h1 className="mt-4 text-center mb-5">{products.name}</h1>
+            <h1 className="mt-4 text-center mb-5">{item.name}</h1>
             <div className="flex flex-row justify-center align-middle h-max">
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-gray-700 w-full rounded-lg shadow-md"
+                className="bg-gray-700 w-auto rounded-lg shadow-md "
               >
-                <table>
-                  <thead>
+                <table className="border-collapse	my-6 text-xs font-sans min-w-[400px] shadow-sm">
+                  <thead className="">
                     <tr>
-                      <th>lmCode</th>
-                      <th>lmDesc</th>
-                      <th>saleAmbition</th>
-                      <th>salePrice</th>
+                      <th>Lm</th>
+                      <th>Descrição</th>
+                      <th>Ambição de vendas</th>
+                      <th>Preço de venda</th>
                     </tr>
                   </thead>
                   {item.products.map((product: any) => {
                     return (
-                      <tbody key={product.id}>
-                        <tr>
-                          <td>{product.lmCode}</td>
-                          <td>{product.lmDesc}</td>
-                          <td>
-                            <input
-                              key={product.saleAmbition}
-                              {...register(`products.${product.id}.saleAmbition`)}
-                              placeholder={"saleAmbition"}
-                              defaultValue={product.saleAmbition}
-                              onChange={(e) => setValue("saleAmbition", e.target.value)}
-                              className="text-center mt-3 text-slate-900"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              {...register(`products.${product.id}.salePrice`)}
-                              placeholder={"salePrice"}
-                              defaultValue={product.salePrice}
-                              onChange={(e) => setValue("salePrice", e.target.value)}
-                              className="text-center mt-3 text-slate-900"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
+                      <>
+                        <MapList product={product} />
+                        {product.articles?.map((article: any) => {
+                          console.log(article)
+                          return <MapList product={article} />
+                        })}
+                        {product.linelists?.map((linelist: any) => {
+                          console.log(linelist)
+                          return <MapList product={linelist} />
+                        })}
+                      </>
                     )
                   })}
                 </table>
-                <div className="fixed bottom-0 w-full bg-[black] h-14 flex flex-row justify-end align-middle">
-                  <Link to="/"><button type="button" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Voltar</button></Link>
-
-                  <button type="submit" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Salvar</button>
-                </div>
               </form>
+              {/* <div className="fixed bottom-0 w-full bg-[black] h-14 flex flex-row justify-end align-middle">
+                <Link to="/"><button type="button" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Voltar</button></Link>
+
+                <button type="submit" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Salvar</button>
+              </div> */}
             </div>
           </>
         )
