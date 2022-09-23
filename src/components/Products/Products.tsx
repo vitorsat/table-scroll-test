@@ -1,11 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import * as yup from "yup"
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { Loader } from "../Loader"
 import { useListProducts } from "../../hooks/useListProducts";
 import { BiError } from "react-icons/bi";
+import { useMemo } from "react";
+import { Virtuoso } from "react-virtuoso";
 
 let renderCount = 0
 
@@ -34,16 +36,16 @@ export default function ProductsComponent() {
 
   const onSubmit = () => {
     const values = getValues()
-    console.log(values)
+    // console.log(values)
     // return postPost.mutate({
     // })
   }
 
   // console.log(getListProducts?.data)
 
-  const MapList = ({ product }: any) => {
+  const MapList = ({ product }: any) => useMemo(() => {
     return (
-      <tr key={product.id} className="text-center border-b border-[#dddddd] hover:bg-black cursor-pointer">
+      <tr key={product.id} className="text-center border-b border-[#dddddd]">
         <td>{product.lmCode}</td>
         <td>{product.lmDesc}</td>
         <td>
@@ -67,7 +69,7 @@ export default function ProductsComponent() {
         </td>
       </tr>
     )
-  }
+  }, [product])
 
   return (
     <>
@@ -99,21 +101,60 @@ export default function ProductsComponent() {
                       <th>Preço de venda</th>
                     </tr>
                   </thead>
-                  {item.products.map((product: any) => {
-                    return (
-                      <>
-                        <MapList product={product} />
-                        {product.articles?.map((article: any) => {
-                          console.log(article)
-                          return <MapList product={article} />
-                        })}
-                        {product.linelists?.map((linelist: any) => {
-                          console.log(linelist)
-                          return <MapList product={linelist} />
-                        })}
-                      </>
-                    )
-                  })}
+                  <tbody>
+                    {item.products.map((product: any) => {
+                      return (
+                        <>
+                          {console.log(product)}
+                          <MapList product={product} />
+                          <div className="flex flex-row justify-center mb-5 w-fit">
+                            <Virtuoso
+                              className="w-fit"
+                              style={{ overflow: 'auto', height: '200px', width: '450px' }}
+                              data={product.articles}
+                              totalCount={product.articles.length}
+                              itemContent={index =>
+                                <>
+                                  <thead className="">
+                                    <tr>
+                                      <th>Lm</th>
+                                      <th>Descrição</th>
+                                      <th>Ambição de vendas</th>
+                                      <th>Preço de venda</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <MapList product={product.articles[index]} />
+                                  </tbody>
+                                </>
+                              }
+                            />
+                            <Virtuoso
+                              className="w-fit"
+                              style={{ overflow: 'auto', height: '200px', width: '450px' }}
+                              data={product.linelinst}
+                              totalCount={product.linelinst.length}
+                              itemContent={index =>
+                                <>
+                                  <thead className="">
+                                    <tr>
+                                      <th>Lm</th>
+                                      <th>Descrição</th>
+                                      <th>Ambição de vendas</th>
+                                      <th>Preço de venda</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <MapList product={product.linelinst[index]} />
+                                  </tbody>
+                                </>
+                              }
+                            />
+                          </div>
+                        </>
+                      )
+                    })}
+                  </tbody>
                 </table>
               </form>
               {/* <div className="fixed bottom-0 w-full bg-[black] h-14 flex flex-row justify-end align-middle">
@@ -128,3 +169,27 @@ export default function ProductsComponent() {
     </>
   )
 }
+
+
+{/* <Virtuoso
+                          //     useWindowScroll
+                          //     className="table-helpcentral virtuoso-list-festival virtuoso-list festival"
+                          //     style={{ overflowY: product.length > 0 ? 'scroll' : 'hidden', margin: 0 }}
+                          //     data={product}
+                          //     components={{ Item: MapList }}
+                          //     itemContent={(index, item) => {
+                          //       return (
+                          //         <MapList product={item} />
+                          //       )
+                          //     }
+
+                                // {
+                                //   item.linelists?.map((linelist: any) => {
+                                //     console.log(linelist)
+                                //     return <MapList product={linelist} />
+                                //   })
+                                // }
+
+
+                            //   }
+                            // /> */}

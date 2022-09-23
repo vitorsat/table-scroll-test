@@ -23,7 +23,7 @@ export function useListProducts() {
   const getListProductsCall = () =>
     api.get("/typologies?_embed=products").then(res => res.data);
 
-  const getListProducts = useQuery<any, Error>("getPost", getListProductsCall, { retry: 2 });
+  const getListProducts = useQuery<any, Error>("getPost", getListProductsCall, { refetchOnWindowFocus: false, retry: 2 });
 
   return { getListProducts };
 }
