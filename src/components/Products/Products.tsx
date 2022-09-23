@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form"
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import * as yup from "yup"
 import { useParams } from "react-router-dom";
 
 import { Loader } from "../Loader"
 import { useListProducts } from "../../hooks/useListProducts";
 import { BiError } from "react-icons/bi";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 
 let renderCount = 0
@@ -29,7 +29,7 @@ export default function ProductsComponent() {
     register,
     handleSubmit,
     getValues,
-    setValue,
+    control
   } = useForm({
     resolver: yupResolver(validationSchema),
   })
@@ -41,35 +41,73 @@ export default function ProductsComponent() {
     // })
   }
 
-  // console.log(getListProducts?.data)
+  const useDebounce = ({ value, delay = 5000 }: any) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
+
+  const SaleAmbitionInput = ({ control, product }: any) => {
+    const saleAmbition = useWatch({
+      control,
+      name: `${product.id}.saleAmbition`,
+      defaultValue: product.saleAmbition
+    })
+
+    const salePrice = useWatch({
+      control,
+      name: `${product.id}.salePrice`,
+      defaultValue: product.salePrice
+    })
+
+    // const saleAmbitionDebounced = useDebounce({ value: saleAmbition, delay: 500 })
+    // const salePriceDebounced = useDebounce({ value: salePrice, delay: 500 })
+    const result = Number(saleAmbition) * Number(salePrice)
+    const debouncedValue = useDebounce({ value: result, delay: 1000 })
+    console.log(debouncedValue)
+
+    return (
+      <p>{debouncedValue}</p>
+    )
+  }
 
   const MapList = ({ product }: any) => useMemo(() => {
     return (
       <tr key={product.id} className="text-center border-b border-[#dddddd]">
         <td>{product.lmCode}</td>
         <td>{product.lmDesc}</td>
+        <input
+          {...register(`${product.id}.saleAmbition`)}
+          placeholder={"saleAmbition"}
+          type="number"
+          defaultValue={product.saleAmbition}
+          className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
+        />
         <td>
           <input
-            key={product.saleAmbition}
-            {...register(`products.${product.id}.saleAmbition`)}
-            placeholder={"saleAmbition"}
-            defaultValue={product.saleAmbition}
-            onChange={(e) => setValue("saleAmbition", e.target.value)}
+            {...register(`${product.id}.salePrice`)}
+            placeholder={"salePrice"}
+            type="number"
+            defaultValue={product.salePrice}
             className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
           />
         </td>
         <td>
-          <input
-            {...register(`products.${product.id}.salePrice`)}
-            placeholder={"salePrice"}
-            defaultValue={product.salePrice}
-            onChange={(e) => setValue("salePrice", e.target.value)}
-            className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
-          />
+          <SaleAmbitionInput control={control} product={product} />
         </td>
       </tr>
     )
-  }, [product])
+  }, [])
 
   return (
     <>
@@ -99,69 +137,30 @@ export default function ProductsComponent() {
                       <th>Descrição</th>
                       <th>Ambição de vendas</th>
                       <th>Preço de venda</th>
+                      <th>Result</th>
                     </tr>
                   </thead>
                   <tbody>
                     {item.products.map((product: any) => {
                       return (
                         <>
-                          {console.log(product)}
                           <MapList product={product} />
-                          <div className="flex flex-row justify-center mb-5 w-fit">
-                            <Virtuoso
-                              className="w-fit"
-                              style={{ overflow: 'auto', height: '200px', width: '450px' }}
-                              data={product.articles}
-                              totalCount={product.articles.length}
-                              itemContent={index =>
-                                <>
-                                  <thead className="">
-                                    <tr>
-                                      <th>Lm</th>
-                                      <th>Descrição</th>
-                                      <th>Ambição de vendas</th>
-                                      <th>Preço de venda</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <MapList product={product.articles[index]} />
-                                  </tbody>
-                                </>
-                              }
-                            />
-                            <Virtuoso
-                              className="w-fit"
-                              style={{ overflow: 'auto', height: '200px', width: '450px' }}
-                              data={product.linelinst}
-                              totalCount={product.linelinst.length}
-                              itemContent={index =>
-                                <>
-                                  <thead className="">
-                                    <tr>
-                                      <th>Lm</th>
-                                      <th>Descrição</th>
-                                      <th>Ambição de vendas</th>
-                                      <th>Preço de venda</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <MapList product={product.linelinst[index]} />
-                                  </tbody>
-                                </>
-                              }
-                            />
-                          </div>
+                          {product.linelinst.map((linelist: any) => {
+                            return (
+                              <MapList product={linelist} />
+                            )
+                          })}
+                          {product.articles.map((article: any) => {
+                            return (
+                              <MapList product={article} />
+                            )
+                          })}
                         </>
                       )
                     })}
                   </tbody>
                 </table>
               </form>
-              {/* <div className="fixed bottom-0 w-full bg-[black] h-14 flex flex-row justify-end align-middle">
-                <Link to="/"><button type="button" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Voltar</button></Link>
-
-                <button type="submit" className="h-full w-20 hover:bg-black hover:text-white bg-white text-black mr-5 rounded-lg">Salvar</button>
-              </div> */}
             </div>
           </>
         )
@@ -169,27 +168,3 @@ export default function ProductsComponent() {
     </>
   )
 }
-
-
-{/* <Virtuoso
-                          //     useWindowScroll
-                          //     className="table-helpcentral virtuoso-list-festival virtuoso-list festival"
-                          //     style={{ overflowY: product.length > 0 ? 'scroll' : 'hidden', margin: 0 }}
-                          //     data={product}
-                          //     components={{ Item: MapList }}
-                          //     itemContent={(index, item) => {
-                          //       return (
-                          //         <MapList product={item} />
-                          //       )
-                          //     }
-
-                                // {
-                                //   item.linelists?.map((linelist: any) => {
-                                //     console.log(linelist)
-                                //     return <MapList product={linelist} />
-                                //   })
-                                // }
-
-
-                            //   }
-                            // /> */}
