@@ -73,7 +73,7 @@ export default function ProductsComponent() {
     // const saleAmbitionDebounced = useDebounce({ value: saleAmbition, delay: 500 })
     // const salePriceDebounced = useDebounce({ value: salePrice, delay: 500 })
     const result = Number(saleAmbition) * Number(salePrice)
-    const debouncedValue = useDebounce({ value: result, delay: 1000 })
+    const debouncedValue = useDebounce({ value: result, delay: 500 })
     console.log(debouncedValue)
 
     return (
@@ -89,7 +89,6 @@ export default function ProductsComponent() {
         <input
           {...register(`${product.id}.saleAmbition`)}
           placeholder={"saleAmbition"}
-          type="number"
           defaultValue={product.saleAmbition}
           className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
         />
@@ -97,7 +96,6 @@ export default function ProductsComponent() {
           <input
             {...register(`${product.id}.salePrice`)}
             placeholder={"salePrice"}
-            type="number"
             defaultValue={product.salePrice}
             className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
           />
