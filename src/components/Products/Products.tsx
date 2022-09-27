@@ -23,7 +23,7 @@ export default function ProductsComponent() {
 
   const { id } = useParams();
 
-  const products = getListProducts.data?.filter((item: any) => item.id == id)
+  // const products = getListProducts.data?.filter((item: any) => item.id == id)
 
   const {
     register,
@@ -91,7 +91,7 @@ export default function ProductsComponent() {
             {...register(`${product.id}.saleAmbition`)}
             placeholder={"saleAmbition"}
             defaultValue={product.saleAmbition}
-            className="h-9 w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
+            className="h-full w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
           />
         </td>
         <td className="h-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer">
@@ -99,7 +99,7 @@ export default function ProductsComponent() {
             {...register(`${product.id}.salePrice`)}
             placeholder={"salePrice"}
             defaultValue={product.salePrice}
-            className="h-9 w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
+            className="h-full w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
           />
         </td>
         <td className="pr-3">
@@ -121,7 +121,7 @@ export default function ProductsComponent() {
           <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error?.message}</p>
         </div>
         : ''}
-      {products?.map((item: any) => {
+      {getListProducts?.data?.map((item: any) => {
         return (
           <>
             <h1 className="mt-4 text-center mb-6 font-bold">{item.name}</h1>
