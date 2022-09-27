@@ -23,7 +23,7 @@ export default function ProductsComponent() {
 
   const { id } = useParams();
 
-  // const products = getListProducts.data?.filter((item: any) => item.id == id)
+  const products = getListProducts.data?.filter((item: any) => item.id == id)
 
   const {
     register,
@@ -83,24 +83,26 @@ export default function ProductsComponent() {
 
   const MapList = ({ product }: any) => useMemo(() => {
     return (
-      <tr key={product.id} className="text-center border-b border-[#dddddd]">
-        <td>{product.lmCode}</td>
+      <tr key={product.id} className="text-center h-9 even:bg-gray-200 font-medium table w-full table-fixed">
+        <td className="pl-3">{product.lmCode}</td>
         <td>{product.lmDesc}</td>
-        <input
-          {...register(`${product.id}.saleAmbition`)}
-          placeholder={"saleAmbition"}
-          defaultValue={product.saleAmbition}
-          className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
-        />
-        <td>
+        <td className="h-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer">
+          <input
+            {...register(`${product.id}.saleAmbition`)}
+            placeholder={"saleAmbition"}
+            defaultValue={product.saleAmbition}
+            className="h-9 w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
+          />
+        </td>
+        <td className="h-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer">
           <input
             {...register(`${product.id}.salePrice`)}
             placeholder={"salePrice"}
             defaultValue={product.salePrice}
-            className="text-center text-white bg-gray-700 hover:bg-black cursor-pointer"
+            className="h-9 w-full text-center text-black bg-transparent hover:bg-gray-300 cursor-pointer"
           />
         </td>
-        <td>
+        <td className="pr-3">
           <SaleAmbitionInput control={control} product={product} />
         </td>
       </tr>
@@ -110,7 +112,7 @@ export default function ProductsComponent() {
   return (
     <>
       {getListProducts.isLoading ? <Loader /> : ''}
-      <h1 className="text-fuchsia-50 flex align-center justify-center mt-3">
+      <h1 className="text-black flex align-center justify-center mt-3">
         Render Count: {renderCount}
       </h1>
       {getListProducts.error ?
@@ -119,26 +121,26 @@ export default function ProductsComponent() {
           <p className="ml-4 text-center mt-3 text-4xl">{getListProducts.error?.message}</p>
         </div>
         : ''}
-      {getListProducts?.data?.map((item: any) => {
+      {products?.map((item: any) => {
         return (
           <>
-            <h1 className="mt-4 text-center mb-5">{item.name}</h1>
-            <div className="flex flex-row justify-center align-middle h-max">
+            <h1 className="mt-4 text-center mb-6 font-bold">{item.name}</h1>
+            <div className="flex flex-row justify-center align-middle h-max mb-6">
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-gray-700 w-auto rounded-lg shadow-md "
+                className="w-4/5 pt-1 rounded-xl shadow-lg align-center mb-4"
               >
-                <table className="border-collapse	my-6 text-xs font-sans min-w-[400px] shadow-sm">
-                  <thead className="">
-                    <tr>
-                      <th>Lm</th>
-                      <th>Descrição</th>
-                      <th>Ambição de vendas</th>
-                      <th>Preço de venda</th>
-                      <th>Result</th>
+                <table className="bg-gray-100 rounded-xl text-base text-black ">
+                  <thead className="rounded-xl justify-center h-10 text-lg font-bold text-white">
+                    <tr className="table w-full table-fixed h-10">
+                      <th className="bg-[#78be20] rounded-tl-lg">Lm</th>
+                      <th className="bg-[#78be20] ">Descrição</th>
+                      <th className="bg-[#78be20] ">Ambição de vendas</th>
+                      <th className="bg-[#78be20] ">Preço de venda</th>
+                      <th className="bg-[#78be20] rounded-tr-lg">Resultado</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="h-[80vh] block overflow-y-scroll scrollbar">
                     {item.products.map((product: any) => {
                       return (
                         <>

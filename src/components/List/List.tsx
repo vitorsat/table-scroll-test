@@ -13,7 +13,7 @@ export function ListComponent() {
   return (
     <>
       {getListProducts.isLoading ? <Loader /> : ''}
-      <h1 className="text-fuchsia-50 flex align-center justify-center mt-3">
+      <h1 className="text-black flex align-center justify-center mt-3">
         Render Count: {renderCount}
       </h1>
       {getListProducts.error ?

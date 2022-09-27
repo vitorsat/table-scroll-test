@@ -6,7 +6,7 @@ export function Loader() {
       <TailSpin
         height="150"
         width="150"
-        color="blue" />
+        color="#78be20" />
     </div>
   );
 }
